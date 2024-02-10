@@ -13,3 +13,6 @@ license = {text = "MIT"}
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
+
+[tool.pdm.scripts]
+tauri-reader = "tauri_reader:main"

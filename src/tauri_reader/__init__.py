@@ -181,6 +181,11 @@ def extraction_tauri_app_resource():
 
 def main():
     global TAURI_APP_PATH, TAURI_APP_CONTENT
+
+    if len(sys.argv) < 2:
+        print("Usage: python tauri-reader.py <path to tauri app>")
+        sys.exit(1)
+        
     # Get the path to the tauri app
     TAURI_APP_PATH = sys.argv[1]
 
@@ -213,8 +218,4 @@ def main():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: python tauri-reader.py <path to tauri app>")
-        sys.exit(1)
-    
     main()
