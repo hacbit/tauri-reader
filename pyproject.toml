@@ -1,6 +1,6 @@
 [project]
 name = "tauri-reader"
-version = "0.1.0"
+version = "0.1.3"
 description = "tauri static asset extraction gadget"
 authors = [
     {name = "hacbit", email = "hacbit@foxmail.com"},

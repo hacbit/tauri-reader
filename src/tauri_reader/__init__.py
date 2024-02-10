@@ -215,7 +215,3 @@ def main():
     
     # Parse the tauri app and extract the resources
     extraction_tauri_app_resource()
-
-
-if __name__ == '__main__':
-    main()
