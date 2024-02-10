@@ -127,7 +127,7 @@ def try_get_table_address(offset: int) -> tuple[int, int] | None:
     
     return (last_data_ptr, last_data_length)
 
-def extraction_tauri_app_resource():
+def parse_tauri_app_resources():
     root_dir = parse_path(TAURI_APP_PATH).pop().split('.')[0] + '_resources'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
@@ -179,39 +179,38 @@ def extraction_tauri_app_resource():
     print("Extraction complete.")
     print(f"Found {resource_count} resources, extracted {success_count} resources, {resource_count - success_count} failed.")
 
-def main():
-    global TAURI_APP_PATH, TAURI_APP_CONTENT
+class TauriReader:
+    def __init__(self, path: str):
+        self.path = path
 
-    if len(sys.argv) < 2:
-        print("Usage: python tauri-reader.py <path to tauri app>")
-        sys.exit(1)
+    def extract(self):
+        global TAURI_APP_PATH, TAURI_APP_CONTENT
+
+        # Check if the path exists
+        if not os.path.exists(self.path):
+            print(f"Path {self.path} does not exist.")
+            sys.exit(1)
+
+        TAURI_APP_PATH = self.path
+
+        # Check if the path is a binary
+        if os.path.isdir(self.path):
+            print("Expected binary file, found directory.")
+            sys.exit(1)
+
+        # Get absolute path
+        self.path = os.path.abspath(self.path)
+
+        # Read the tauri app
+        with open(self.path, 'rb') as app:
+            TAURI_APP_CONTENT = app.read()
+
+        # Check if the app is a tauri app
+        if not check_is_tauri_app():
+            print(f"The file {self.path} may not be a tauri app.")
+            sys.exit(1)
+
+        find_tauri_app_base()            
         
-    # Get the path to the tauri app
-    TAURI_APP_PATH = sys.argv[1]
-
-    # Check if the path exists
-    if not os.path.exists(TAURI_APP_PATH):
-        print(f"Path {TAURI_APP_PATH} does not exist.")
-        sys.exit(1)
-
-    # Check if the path is a binary
-    if os.path.isdir(TAURI_APP_PATH):
-        print("Expected binary file, found directory.")
-        sys.exit(1)
-
-    # Get absolute path
-    TAURI_APP_PATH = os.path.abspath(TAURI_APP_PATH)
-
-    # Read the tauri app
-    with open(TAURI_APP_PATH, 'rb') as app:
-        TAURI_APP_CONTENT = app.read()
-
-    # Check if the app is a tauri app
-    if not check_is_tauri_app():
-        print(f"The file {TAURI_APP_PATH} may not be a tauri app.")
-        sys.exit(1)
-
-    find_tauri_app_base()            
-    
-    # Parse the tauri app and extract the resources
-    extraction_tauri_app_resource()
+        # Parse the tauri app and extract the resources
+        parse_tauri_app_resources()

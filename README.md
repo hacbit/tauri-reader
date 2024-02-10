@@ -1,11 +1,10 @@
-# tauri-reader v0.1.3
+# tauri-reader
 
 ## Install
 
 `````
 pip install --upgrade tauri-reader
 `````
-
 
 
 ## Usage
