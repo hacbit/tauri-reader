@@ -13,3 +13,8 @@ pip install --upgrade tauri-reader
 > python -m tauri_reader TAURI_APP_PATH
 ```
 
+or
+
+```
+> tauri-reader TAURI_APP_PATH
+```
